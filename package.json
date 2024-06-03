@@ -1,0 +1,23 @@
+{
+  "name": "cypress_beginner",
+  "version": "1.0.0",
+  "description": "Cypress examples and test",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "npx cypress open",
+    "cy:run": "npx cypress run",
+    "cy:run:verifier": "npx cypress run --spec 'cypress/e2e/3-verifier-hw-example/verifier.cy.js'"
+  },
+  "keywords": [
+    "cypress"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shinkai-tester/cypress_beginner.git"
+  },
+  "author": "Aleksandra Klimantova",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.10.0"
+  }
+}
