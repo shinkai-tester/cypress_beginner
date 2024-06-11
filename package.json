@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cy:open": "npx cypress open",
-    "cy:run": "npx cypress run",
-    "cy:run:verifier": "npx cypress run --spec 'cypress/e2e/3-verifier-hw-example/verifier.cy.js'"
+    "cy:run": "npx cypress run"
   },
   "keywords": [
     "cypress"
