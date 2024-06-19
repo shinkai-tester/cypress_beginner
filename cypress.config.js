@@ -11,7 +11,11 @@ module.exports = defineConfig({
       student_password: "Test123456!",
     },
     setupNodeEvents(on, config) {
-      console.log(`Using config file: ${config.env.configFile}`); // Log the config file
+      on('before:spec', () => {
+        console.log(`Using config file: ${config.env.configFile}`);
+      });
+
+      return config;
     },
   },
 });
