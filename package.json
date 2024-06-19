@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cy:open": "npx cypress open",
+    "cy:open:staging": "npx cypress open --config-file cypress.staging.config.js",
     "cy:run": "npx cypress run",
     "cy:run:staging": "npx cypress run --config-file cypress.staging.config.js",
     "cy:config:dashboard": "npm run cy:run -- --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc",
@@ -20,6 +21,6 @@
   "author": "Aleksandra Klimantova",
   "license": "ISC",
   "devDependencies": {
-    "cypress": "^13.10.0"
+    "cypress": "^13.12.0"
   }
 }
