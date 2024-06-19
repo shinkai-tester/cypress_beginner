@@ -6,7 +6,9 @@
   "scripts": {
     "cy:open": "npx cypress open",
     "cy:run": "npx cypress run",
-    "cy:dashboard": "npm run cy:run -- --record --key 8363951c-4335-44c4-96cc-8b260ca4e9d4"
+    "cy:run:staging": "npx cypress run --config-file cypress.staging.config.js",
+    "cy:config:dashboard": "npm run cy:run -- --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc",
+    "cy:staging:dashboard": "npm run cy:run:staging -- --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc"
   },
   "keywords": [
     "cypress"
