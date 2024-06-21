@@ -1,14 +1,15 @@
 describe("Verifier basic tests", () => {
   beforeEach(() => {
-    cy.visit("");
+    cy.visit("/");
   });
 
-  it("Check that Verifier main page is loaded", () => {
-    cy.url().should("include", "page=1&sort=id,asc");
-    cy.contains("Sqlverifier").should("be.visible");
-    cy.get("#header-tabs")
-      .should("contain.text", "Home")
-      .and("contain.text", "Account");
-    cy.get("#task-heading").should("contain.text", "Tasks");
+  it("Should load the Verifier main page with correct elements", () => {
+    const pageTitle = ".brand-title span";
+
+    cy.urlIncludes("page=1&sort=id,asc");
+    cy.checkElementVisibility(pageTitle);
+    cy.hasText(pageTitle, "Sqlverifier");
+    cy.containsMultipleTexts("#header-tabs", ["Home", "English", "Account"]);
+    cy.containsText("#task-heading", "Tasks");
   });
 });
