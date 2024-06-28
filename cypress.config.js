@@ -6,12 +6,13 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "https://sqlverifier-live-6e21ca0ed768.herokuapp.com",
     env: {
-      configFile: 'cypress.config.js',
+      configFile: "cypress.config.js",
       student_username: "shurka",
       student_password: "Test123456!",
+      admin: "admin_automation",
     },
     setupNodeEvents(on, config) {
-      on('before:spec', () => {
+      on("before:spec", () => {
         console.log(`Using config file: ${config.env.configFile}`);
       });
 

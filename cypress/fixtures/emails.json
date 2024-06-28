@@ -1,0 +1,21 @@
+{
+    "good_emails": [
+        "test@example.com",
+        "user.name+tag@example.com",
+        "user_name@example.com",
+        "user-name@example.net",
+        "username123@example.org",
+        "user.name@sub.example.com",
+        "user@123.123.123.123"
+    ],
+    "bad_emails": [
+        " ",
+        "plainaddress",
+        "@missingusername.com",
+        "username@example",
+        "username.com",
+        ".username@example.com",
+        "username@example..com",
+        "username@domain@domain.com"
+    ]
+}

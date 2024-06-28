@@ -8,12 +8,7 @@ describe("Tests on redirection after clicking header's menu elements", () => {
   const taskHeading = "#task-heading";
 
   beforeEach(() => {
-    cy.visit("/");
-    cy.clickElement("#account-menu");
-    cy.clickElement("#login-item span");
-    cy.get("#username").type(Cypress.env("student_username"));
-    cy.get("#password").type(Cypress.env("student_password"));
-    cy.clickElement('[type="submit"]');
+    cy.login(Cypress.env("student_username"), Cypress.env("student_password"));
   });
 
   it("Redirection to tasks page after clicking 'Entities -> Task'", () => {

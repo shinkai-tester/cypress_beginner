@@ -1,0 +1,26 @@
+{
+    "good_usernames": [
+        "a",
+        "_leadingunderscore",
+        "trailingunderscore_",
+        "middle-dash",
+        "dot.in.middle",
+        "combination-_",
+        "short123",
+        "mixedCASE",
+        "longusernametestwithlettersandnumbers123",
+        "user_name-123",
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRST1234",
+        "username@domain.com"
+    ],
+    "bad_usernames": [
+        " ",
+        " username",
+        "username ",
+        "user name",
+        "EranwYgiT9wpYyu8ktj5Ki4FxfOjKL8uDQ0MQx9iqA0Sx7LF4R6",
+        "user!name",
+        "user$name",
+        "user&name"
+    ]
+}
