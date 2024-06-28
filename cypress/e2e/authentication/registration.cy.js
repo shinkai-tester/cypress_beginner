@@ -16,7 +16,7 @@ beforeEach(() => {
 describe("Basic registration tests", () => {
   it("Check successful user registration", () => {
     let password = faker.internet.password();
-    userName = faker.internet.userName().toLowerCase().replace(/\./g, "_");
+    let userName = faker.internet.userName().toLowerCase().replace(/\./g, "_");
     let email = faker.internet.email();
 
     cy.registerUser(userName, email, password, password);

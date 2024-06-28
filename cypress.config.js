@@ -10,6 +10,8 @@ module.exports = defineConfig({
       student_username: "shurka",
       student_password: "Test123456!",
       admin: "admin_automation",
+      teacher_username: "shurka_teacher",
+      teacher_password: "Test1234!",
     },
     setupNodeEvents(on, config) {
       on("before:spec", () => {

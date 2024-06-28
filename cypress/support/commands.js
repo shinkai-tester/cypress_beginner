@@ -57,6 +57,10 @@ Cypress.Commands.add("checkElementVisibility", (selector, timeout = 1000) => {
   cy.get(selector, { timeout: timeout }).should("be.visible");
 });
 
+Cypress.Commands.add("checkElementNotExist", (selector) => {
+  cy.get(selector).should("not.exist");
+});
+
 Cypress.Commands.add("checkElementHasClass", (selector, className) => {
   cy.get(selector).should("have.class", className);
 });
