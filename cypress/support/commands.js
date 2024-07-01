@@ -24,6 +24,9 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+const loginPageElements = require("../fixtures/pages/loginPageSelectors.json");
+const changePassPageElements = require("../fixtures/pages/changePassPageSelectors.json");
+
 const SELECTORS = {
   adminMenu: "#admin-menu",
   userManagementLink: '[href="/admin/user-management"]',
@@ -133,9 +136,27 @@ Cypress.Commands.add(
 
 Cypress.Commands.add("login", (username, password) => {
   cy.visit("/login");
-  cy.enterText(SELECTORS.usernameInput, username);
-  cy.enterText(SELECTORS.passwordInput, password);
-  cy.clickElement(SELECTORS.loginSubmit);
+  cy.enterText(loginPageElements.usernameInput, username);
+  cy.enterText(loginPageElements.passwordInput, password);
+  cy.clickElement(loginPageElements.loginSubmit);
+});
+
+Cypress.Commands.add("logout", () => {
+  cy.clickElement(changePassPageElements.accountMenu);
+  cy.contains("Sign out").click();
+});
+
+Cypress.Commands.add("changePassword", (username, oldPassword, newPassword) => {
+  cy.login(username, oldPassword);
+  cy.clickElement(changePassPageElements.accountMenu);
+  cy.clickElement(changePassPageElements.passwordMenu);
+  cy.enterText(changePassPageElements.currentPasswordField, oldPassword);
+  cy.enterText(changePassPageElements.newPasswordField, newPassword);
+  cy.enterText(
+    changePassPageElements.newPasswordFieldConfirmation,
+    newPassword
+  );
+  cy.clickElement(changePassPageElements.saveChangesButton);
 });
 
 Cypress.Commands.add("checkNewUserInTableByAdmin", (username) => {

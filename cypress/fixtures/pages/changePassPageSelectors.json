@@ -1,0 +1,8 @@
+{
+    "accountMenu": "#account-menu",
+    "passwordMenu": "[data-cy='passwordItem']",
+    "currentPasswordField": "#currentPassword",
+    "newPasswordField": "#newPassword",
+    "newPasswordFieldConfirmation": "#confirmPassword",
+    "saveChangesButton": "#password-form button[type='submit']"
+}
