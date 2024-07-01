@@ -26,6 +26,7 @@
 
 const SELECTORS = {
   adminMenu: "#admin-menu",
+  accountMenu: "#account-menu",
   userManagementLink: '[href="/admin/user-management"]',
   registerSubmit: "#register-submit",
   lastPageButton: 'button[aria-label="Last"]',
@@ -136,6 +137,11 @@ Cypress.Commands.add("login", (username, password) => {
   cy.enterText(SELECTORS.usernameInput, username);
   cy.enterText(SELECTORS.passwordInput, password);
   cy.clickElement(SELECTORS.loginSubmit);
+});
+
+Cypress.Commands.add("logout", () => {
+  cy.clickElement(SELECTORS.accountMenu);
+  cy.contains("Sign out").click();
 });
 
 Cypress.Commands.add("checkNewUserInTableByAdmin", (username) => {
