@@ -1,56 +1,12 @@
-import { faker } from "@faker-js/faker";
+import { STATUS_CODES } from "../../utils/constants";
+import {
+  generateTaskData,
+  testsMissingParamCreate,
+  testCasesPartialUpdate,
+} from "../../utils/testDataTask";
 
 const baseURL = Cypress.config("baseUrl");
 let token;
-
-const STATUS_OK = 200;
-const STATUS_CREATED = 201;
-const STATUS_NO_CONTENT = 204;
-const STATUS_BAD_REQUEST = 400;
-const STATUS_UNAUTHORIZED = 401;
-const STATUS_NOT_FOUND = 404;
-
-const testsMissingParamCreate = [
-  {
-    description: "missing text",
-    body: {
-      answer: faker.lorem.sentence(),
-      title: faker.lorem.words(5),
-    },
-  },
-  {
-    description: "missing answer",
-    body: {
-      text: faker.hacker.phrase(),
-      title: faker.lorem.words(5),
-    },
-  },
-  {
-    description: "missing title",
-    body: {
-      text: faker.hacker.phrase(),
-      answer: faker.lorem.sentence(),
-    },
-  },
-];
-
-const testCasesPartialUpdate = [
-  {
-    description: "Update only task title",
-    updateField: { title: faker.lorem.words(3) },
-    fieldName: "title",
-  },
-  {
-    description: "Update only task answer",
-    updateField: { answer: faker.lorem.sentence() },
-    fieldName: "answer",
-  },
-  {
-    description: "Update only task text",
-    updateField: { text: faker.hacker.phrase() },
-    fieldName: "text",
-  },
-];
 
 before(() => {
   cy.request({
@@ -62,17 +18,15 @@ before(() => {
       rememberMe: true,
     },
   }).then((response) => {
-    expect(response.status).to.eq(STATUS_OK);
+    expect(response.status).to.eq(STATUS_CODES.OK);
     token = response.body.id_token;
     Cypress.env("token", token);
   });
 });
 
 describe("Task API tests: create", () => {
-  it("Cteate task", () => {
-    let sentText = faker.hacker.phrase();
-    let sentAnswer = faker.lorem.sentence();
-    let sentTitle = faker.lorem.words(5);
+  it("Create task", () => {
+    const { text, answer, title } = generateTaskData();
 
     cy.request({
       method: "POST",
@@ -81,36 +35,38 @@ describe("Task API tests: create", () => {
         Authorization: `Bearer ${token}`,
       },
       body: {
-        text: sentText,
-        answer: sentAnswer,
-        title: sentTitle,
+        text,
+        answer,
+        title,
       },
     }).then((response) => {
-      expect(response.status).to.eq(STATUS_CREATED);
+      expect(response.status).to.eq(STATUS_CODES.CREATED);
       expect(response.body)
         .to.have.property("id")
         .and.to.be.a("number")
         .and.to.be.above(0);
-      expect(response.body.text).to.eq(sentText);
-      expect(response.body.answer).to.eq(sentAnswer);
-      expect(response.body.title).to.eq(sentTitle);
+      expect(response.body.text).to.eq(text);
+      expect(response.body.answer).to.eq(answer);
+      expect(response.body.title).to.eq(title);
 
       cy.cleanupTaskViaAPI(token, response.body.id);
     });
   });
 
   it("Create task without token", () => {
+    const { text, answer, title } = generateTaskData();
+
     cy.request({
       method: "POST",
       url: `${baseURL}/api/tasks`,
       failOnStatusCode: false,
       body: {
-        text: faker.hacker.phrase(),
-        answer: faker.lorem.sentence(),
-        title: faker.lorem.words(5),
+        text,
+        answer,
+        title,
       },
     }).then((response) => {
-      expect(response.status).to.eq(STATUS_UNAUTHORIZED);
+      expect(response.status).to.eq(STATUS_CODES.UNAUTHORIZED);
     });
   });
 
@@ -125,7 +81,7 @@ describe("Task API tests: create", () => {
         body: body,
         failOnStatusCode: false,
       }).then((response) => {
-        expect(response.status).to.eq(STATUS_BAD_REQUEST); // must return 400 Bad Request, but there is a bug: returns 500
+        expect(response.status).to.eq(STATUS_CODES.BAD_REQUEST); // must return 400 Bad Request, but there is a bug: returns 500
       });
     });
   });
@@ -133,14 +89,14 @@ describe("Task API tests: create", () => {
 
 describe("Task API tests: task update", () => {
   it("Full task update", () => {
-    let text = faker.hacker.phrase();
-    let answer = faker.lorem.sentence();
-    let title = faker.lorem.words(5);
+    const { text, answer, title } = generateTaskData();
 
     cy.createTaskViaAPI(token, text, answer, title).then((taskId) => {
-      let updText = faker.hacker.phrase();
-      let updAnswer = faker.lorem.sentence();
-      let updTitle = faker.lorem.words(3);
+      const {
+        text: updText,
+        answer: updAnswer,
+        title: updTitle,
+      } = generateTaskData();
 
       cy.log(`Created task with ID: ${taskId}`);
 
@@ -157,7 +113,7 @@ describe("Task API tests: task update", () => {
           title: updTitle,
         },
       }).then((response) => {
-        expect(response.status).to.eq(STATUS_OK);
+        expect(response.status).to.eq(STATUS_CODES.OK);
         expect(response.body.id).to.eq(taskId);
         expect(response.body.text).to.eq(updText);
         expect(response.body.answer).to.eq(updAnswer);
@@ -169,23 +125,27 @@ describe("Task API tests: task update", () => {
   });
 
   it("Full task update without token", () => {
-    let text = faker.hacker.phrase();
-    let answer = faker.lorem.sentence();
-    let title = faker.lorem.words(5);
+    const { text, answer, title } = generateTaskData();
 
     cy.createTaskViaAPI(token, text, answer, title).then((taskId) => {
+      const {
+        text: updText,
+        answer: updAnswer,
+        title: updTitle,
+      } = generateTaskData();
+
       cy.request({
         method: "PUT",
         url: `${baseURL}/api/tasks/${taskId}`,
         body: {
           id: taskId,
-          text: faker.hacker.phrase(),
-          answer: faker.lorem.sentence(),
-          title: faker.lorem.words(3),
+          text: updText,
+          answer: updAnswer,
+          title: updTitle,
         },
         failOnStatusCode: false,
       }).then((response) => {
-        expect(response.status).to.eq(STATUS_UNAUTHORIZED);
+        expect(response.status).to.eq(STATUS_CODES.UNAUTHORIZED);
 
         cy.cleanupTaskViaAPI(token, taskId);
       });
@@ -193,32 +153,36 @@ describe("Task API tests: task update", () => {
   });
 
   it.skip("Full update of not existing task", () => {
+    const {
+      text: updText,
+      answer: updAnswer,
+      title: updTitle,
+    } = generateTaskData();
+
     cy.request({
       method: "PUT",
       url: `${baseURL}/api/tasks/123`,
       body: {
         id: 123,
-        text: faker.hacker.phrase(),
-        answer: faker.lorem.sentence(),
-        title: faker.lorem.words(3),
+        text: updText,
+        answer: updAnswer,
+        title: updTitle,
       },
       headers: {
         Authorization: `Bearer ${token}`,
       },
       failOnStatusCode: false,
     }).then((response) => {
-      expect(response.status).to.eq(STATUS_BAD_REQUEST); // must return 404 Not Found, but returns 400 Bad Request
-
-      cy.cleanupTaskViaAPI(token, taskId);
+      expect(response.status).to.eq(STATUS_CODES.BAD_REQUEST); // must return 404 Not Found, but returns 400 Bad Request
     });
   });
 
-  it.skip("Full update - not all parameters are speicifed", () => {
-    let text = faker.hacker.phrase();
-    let answer = faker.lorem.sentence();
-    let title = faker.lorem.words(5);
+  it.skip("Full update - not all parameters are specified", () => {
+    const { text, answer, title } = generateTaskData();
 
     cy.createTaskViaAPI(token, text, answer, title).then((taskId) => {
+      const { text: updText, answer: updAnswer } = generateTaskData();
+
       cy.request({
         method: "PUT",
         url: `${baseURL}/api/tasks/${taskId}`,
@@ -227,12 +191,12 @@ describe("Task API tests: task update", () => {
         },
         body: {
           id: taskId,
-          text: faker.hacker.phrase(),
-          answer: faker.lorem.sentence(),
+          text: updText,
+          answer: updAnswer,
         },
         failOnStatusCode: false,
       }).then((response) => {
-        expect(response.status).to.eq(STATUS_BAD_REQUEST); // must return 400 Bad Request, but returns 500
+        expect(response.status).to.eq(STATUS_CODES.BAD_REQUEST); // must return 400 Bad Request, but returns 500
 
         cy.cleanupTaskViaAPI(token, taskId);
       });
@@ -241,9 +205,11 @@ describe("Task API tests: task update", () => {
 
   testCasesPartialUpdate.forEach(({ description, updateField, fieldName }) => {
     it(description, () => {
-      let initText = faker.hacker.phrase();
-      let initAnswer = faker.lorem.sentence();
-      let initTitle = faker.lorem.words(5);
+      const {
+        text: initText,
+        answer: initAnswer,
+        title: initTitle,
+      } = generateTaskData();
 
       cy.createTaskViaAPI(token, initText, initAnswer, initTitle).then(
         (taskId) => {
@@ -257,7 +223,7 @@ describe("Task API tests: task update", () => {
             },
             body: requestBody,
           }).then((response) => {
-            expect(response.status).to.eq(STATUS_OK);
+            expect(response.status).to.eq(STATUS_CODES.OK);
             expect(response.body.id).to.eq(taskId);
             expect(response.body.text).to.eq(
               fieldName === "text" ? requestBody.text : initText
@@ -277,9 +243,7 @@ describe("Task API tests: task update", () => {
   });
 
   it("Partial update: no update of any field", () => {
-    let text = faker.hacker.phrase();
-    let answer = faker.lorem.sentence();
-    let title = faker.lorem.words(5);
+    const { text, answer, title } = generateTaskData();
 
     cy.createTaskViaAPI(token, text, answer, title).then((taskId) => {
       cy.request({
@@ -292,7 +256,7 @@ describe("Task API tests: task update", () => {
           id: taskId,
         },
       }).then((response) => {
-        expect(response.status).to.eq(STATUS_OK);
+        expect(response.status).to.eq(STATUS_CODES.OK);
         expect(response.body.id).to.eq(taskId);
         expect(response.body.text).to.eq(text);
         expect(response.body.answer).to.eq(answer);
@@ -306,9 +270,7 @@ describe("Task API tests: task update", () => {
 
 describe("Task API tests: task delete", () => {
   it("Delete existing task", () => {
-    let text = faker.hacker.phrase();
-    let answer = faker.lorem.sentence();
-    let title = faker.lorem.words(5);
+    const { text, answer, title } = generateTaskData();
 
     cy.createTaskViaAPI(token, text, answer, title).then((taskId) => {
       cy.request({
@@ -318,10 +280,10 @@ describe("Task API tests: task delete", () => {
           Authorization: `Bearer ${token}`,
         },
       }).then((response) => {
-        expect(response.status).to.eq(STATUS_NO_CONTENT);
+        expect(response.status).to.eq(STATUS_CODES.NO_CONTENT);
 
         cy.getTaskByIdViaAPI(token, taskId).then((response) => {
-          expect(response.status).to.eq(STATUS_NOT_FOUND);
+          expect(response.status).to.eq(STATUS_CODES.NOT_FOUND);
         });
       });
     });
@@ -336,7 +298,7 @@ describe("Task API tests: task delete", () => {
       },
       failOnStatusCode: false,
     }).then((response) => {
-      expect(response.status).to.eq(STATUS_NO_CONTENT);
+      expect(response.status).to.eq(STATUS_CODES.NO_CONTENT);
     });
   });
 
@@ -349,15 +311,13 @@ describe("Task API tests: task delete", () => {
       },
       failOnStatusCode: false,
     }).then((response) => {
-      expect(response.status).to.eq(STATUS_BAD_REQUEST);
+      expect(response.status).to.eq(STATUS_CODES.BAD_REQUEST);
       expect(response.body.detail).to.include("Failed to convert 'id'");
     });
   });
 
   it("Delete task without token", () => {
-    let text = faker.hacker.phrase();
-    let answer = faker.lorem.sentence();
-    let title = faker.lorem.words(5);
+    const { text, answer, title } = generateTaskData();
 
     cy.createTaskViaAPI(token, text, answer, title).then((taskId) => {
       cy.request({
@@ -365,7 +325,7 @@ describe("Task API tests: task delete", () => {
         url: `${baseURL}/api/tasks/${taskId}`,
         failOnStatusCode: false,
       }).then((response) => {
-        expect(response.status).to.eq(STATUS_UNAUTHORIZED);
+        expect(response.status).to.eq(STATUS_CODES.UNAUTHORIZED);
 
         cy.cleanupTaskViaAPI(token, taskId);
       });
