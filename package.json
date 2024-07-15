@@ -17,7 +17,12 @@
     "cy:staging:cloud": "npm run cy:run:staging -- --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc",
     "cy:auth:chrome:monitor": "npx cypress run --config-file cypress.24inch.config.js --spec 'cypress/e2e/authentication/*' --browser chrome",
     "cy:basic:electron:laptop": "npx cypress run --config-file cypress.13inch.config.js --spec 'cypress/e2e/basic/*' --browser electron",
-    "cy:parallel:cloud": "powershell -Command \"$guid = [guid]::NewGuid().ToString(); npx concurrently \\\"npm run cy:auth:chrome:monitor -- --group auth-chrome-monitor --ci-build-id $guid --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc\\\" \\\"npm run cy:basic:electron:laptop -- --group basic-electron-laptop --ci-build-id $guid --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc\\\"\""
+    "cy:parallel:cloud:win": "powershell -Command \"$guid = [guid]::NewGuid().ToString(); npx concurrently \\\"npm run cy:auth:chrome:monitor -- --group auth-chrome-monitor --ci-build-id $guid --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc\\\" \\\"npm run cy:basic:electron:laptop -- --group basic-electron-laptop --ci-build-id $guid --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc\\\"\"",
+    "cy:parallel:cloud:bash": "bash run-parallel.sh",
+    "cy:parallel:auth": "npx cypress run --spec 'cypress/e2e/authentication/*' --group auth-tests --parallel",
+    "cy:parallel:tasks": "npx cypress run --spec 'cypress/e2e/api/*' --group tasks-tests --parallel",
+    "cy:parallel:basic": "npx cypress run --spec 'cypress/e2e/basic/*' --group basic-tests --parallel",
+    "cy:parallel:cloud:all": "concurrently \"npm run cy:parallel:auth -- --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc\" \"npm run cy:parallel:tasks -- --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc\" \"npm run cy:parallel:basic -- --record --key 0d95f9f5-66c6-4fa9-b19d-61a5107e8adc\""
   },
   "keywords": [
     "cypress"
@@ -32,6 +37,7 @@
     "@faker-js/faker": "^8.4.1",
     "concurrently": "^8.2.2",
     "cypress": "^13.12.0",
-    "cypress-each": "^1.14.0"
+    "cypress-each": "^1.14.0",
+    "uuid": "^10.0.0"
   }
 }
