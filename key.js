@@ -1,0 +1,4 @@
+curl -H "Content-Type: application/json" -X POST --data '{ "client_id": "B26CDE9A12BE49F6A4263CCE43C7030C","client_secret": "12430cba2c97450ba3218cc841b8a0a20f0e104ccc6b59b91b27625c89a0fbe6" }'  https://xray.cloud.getxray.app/api/v2/authenticate
+
+
+curl -v -H "Content-Type: text/xml" -X POST -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnQiOiIyOTRkZjY5YS0wNmU1LTMxMTgtYjBhNS1mMGY0YWE2OTM5MDUiLCJhY2NvdW50SWQiOiI3MTIwMjA6ZmEyYTdmMzQtOTk0NC00ZDZhLTk1OTctMjAxNjg3OWZjNTBiIiwiaXNYZWEiOmZhbHNlLCJpYXQiOjE3MjE2MTI1ODAsImV4cCI6MTcyMTY5ODk4MCwiYXVkIjoiQjI2Q0RFOUExMkJFNDlGNkE0MjYzQ0NFNDNDNzAzMEMiLCJpc3MiOiJjb20ueHBhbmRpdC5wbHVnaW5zLnhyYXkiLCJzdWIiOiJCMjZDREU5QTEyQkU0OUY2QTQyNjNDQ0U0M0M3MDMwQyJ9.24H5prf9XWWTi_IR-AMxjN5YuegV6nX3w60I8SFy1Sc"  --data @"test-results.xml" https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=XSP

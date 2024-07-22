@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="28.745" tests="10" failures="0">
+  <testsuite name="Root Suite" timestamp="2024-07-22T01:41:16" tests="0" file="cypress\e2e\authentication\registration.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Basic registration tests" timestamp="2024-07-22T01:41:16" tests="2" time="6.366" failures="0">
+    <testcase name="Basic registration tests Check successful user registration" time="5.164" classname="Check successful user registration">
+    </testcase>
+    <testcase name="Basic registration tests Check registration when all fields are not filled" time="1.151" classname="Check registration when all fields are not filled">
+    </testcase>
+  </testsuite>
+  <testsuite name="Username field validation tests" timestamp="2024-07-22T01:41:22" tests="2" time="8.456" failures="0">
+    <testcase name="Username field validation tests Check valid username" time="5.380" classname="Check valid username">
+    </testcase>
+    <testcase name="Username field validation tests Negative checks on username" time="3.020" classname="Negative checks on username">
+    </testcase>
+  </testsuite>
+  <testsuite name="Email field validation tests" timestamp="2024-07-22T01:41:31" tests="2" time="7.558" failures="0">
+    <testcase name="Email field validation tests Check valid email" time="3.641" classname="Check valid email">
+    </testcase>
+    <testcase name="Email field validation tests Negative checks on email" time="3.858" classname="Negative checks on email">
+    </testcase>
+  </testsuite>
+  <testsuite name="Password field validation tests" timestamp="2024-07-22T01:41:38" tests="4" time="6.359" failures="0">
+    <testcase name="Password field validation tests Check password strength levels" time="1.603" classname="Check password strength levels">
+    </testcase>
+    <testcase name="Password field validation tests Check password length positive" time="1.476" classname="Check password length positive">
+    </testcase>
+    <testcase name="Password field validation tests Check password length negative" time="1.361" classname="Check password length negative">
+    </testcase>
+    <testcase name="Password field validation tests Password confirmation tests" time="1.820" classname="Password confirmation tests">
+    </testcase>
+  </testsuite>
+</testsuites>
